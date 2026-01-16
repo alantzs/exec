@@ -6,10 +6,13 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v2
+
       - name: Compile Pro
-        run: csc /target:winexe /out:PRO_VERSION.exe Pro.cs
+        run: |
+          $csc = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
+          & $csc /target:winexe /out:PRO_VERSION.exe Pro.cs
+        shell: powershell
+
       - name: Upload Pro
         uses: actions/upload-artifact@v4
         with:
