@@ -1,0 +1,17 @@
+name: Build_PRO
+on: [workflow_dispatch, push]
+
+jobs:
+  build_pro:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+      - name: Compile Pro
+        run: csc /target:winexe /out:PRO_VERSION.exe Pro.cs
+      - name: Upload Pro
+        uses: actions/upload-artifact@v4
+        with:
+          name: PRO_EXE
+          path: PRO_VERSION.exe
