@@ -1,37 +1,22 @@
-name: Build EXEC PC
+name: Build 
 on: [push, workflow_dispatch]
 
 jobs:
   build:
     runs-on: windows-latest
     steps:
-      - name: Checkout Code
+      - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1.1
-
       - name: Build FREE
-        # Мы добавили проверку: если файла нет, билд просто пропустит этот шаг
-        run: |
-          if (Test-Path "Free.cs") {
-            csc.exe /target:winexe /out:EXEC_FREE.exe Free.cs
-          } else {
-            Write-Host "Free.cs not found!"
-          }
-        shell: powershell
+        # Прямая команда без лишних проверок
+        run: csc.exe /target:winexe /out:EXEC_FREE.exe Free.cs
 
       - name: Build PRO
-        run: |
-          if (Test-Path "Pro.cs") {
-            csc.exe /target:winexe /out:EXEC_PRO.exe Pro.cs
-          } else {
-            Write-Host "Pro.cs not found!"
-          }
-        shell: powershell
+        run: csc.exe /target:winexe /out:EXEC_PRO.exe Pro.cs
 
       - name: Upload
         uses: actions/upload-artifact@v3
         with:
-          name: EXEC_Bundles
+          name: EXEC_PC
           path: "*.exe"
