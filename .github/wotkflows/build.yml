@@ -1,22 +1,17 @@
-name: Build 
-on: [push, workflow_dispatch]
+name: FORCE_BUILD
+on: 
+  workflow_dispatch: # Это добавит кнопку ручного запуска
 
 jobs:
   build:
     runs-on: windows-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Build FREE
-        # Прямая команда без лишних проверок
-        run: csc.exe /target:winexe /out:EXEC_FREE.exe Free.cs
-
-      - name: Build PRO
-        run: csc.exe /target:winexe /out:EXEC_PRO.exe Pro.cs
-
-      - name: Upload
-        uses: actions/upload-artifact@v3
+      - uses: actions/checkout@v3
+      - name: Build
+        run: |
+          csc.exe /target:winexe /out:FREE.exe Free.cs
+          csc.exe /target:winexe /out:PRO.exe Pro.cs
+      - uses: actions/upload-artifact@v3
         with:
-          name: EXEC_PC
+          name: EXECs
           path: "*.exe"
