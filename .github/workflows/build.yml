@@ -1,0 +1,17 @@
+name: FORCE_BUILD
+on: 
+  workflow_dispatch: # Это добавит кнопку ручного запуска
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build
+        run: |
+          csc.exe /target:winexe /out:FREE.exe Free.cs
+          csc.exe /target:winexe /out:PRO.exe Pro.cs
+      - uses: actions/upload-artifact@v3
+        with:
+          name: EXECs
+          path: "*.exe"
