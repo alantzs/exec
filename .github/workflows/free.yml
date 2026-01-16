@@ -7,14 +7,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Add MSBuild to PATH
-        uses: microsoft/setup-msbuild@v2
-
       - name: Compile Free
-        # Используем встроенный компилятор напрямую через путь
         run: |
-          $cscPath = Get-ChildItem -Recurse -Path "C:\Program Files\Microsoft Visual Studio" -Filter "csc.exe" | Select-Object -First 1 -ExpandProperty FullName
-          & $cscPath /target:winexe /out:FREE_VERSION.exe Free.cs
+          $csc = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
+          & $csc /target:winexe /out:FREE_VERSION.exe Free.cs
         shell: powershell
 
       - name: Upload Free
