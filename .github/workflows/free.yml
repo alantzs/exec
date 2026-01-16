@@ -1,19 +1,22 @@
 name: Build FREE Version
-on: 
-  push:
-    paths:
-      - 'Free.cs' # Собирает только если изменил Free версию
+on: [push, workflow_dispatch]
+
 jobs:
   build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.1
-      - name: Compile FREE
+
+      - name: Compile FREE EXEC
+        # Используем csc для сборки твоего Free.cs с ключом
         run: csc.exe /target:winexe /out:EXEC_FREE_PC.exe Free.cs
-      - name: Upload
+
+      - name: Upload EXE
         uses: actions/upload-artifact@v3
         with:
-          name: Exec_Free_Build
+          name: Exec_Free_Version
           path: EXEC_FREE_PC.exe
