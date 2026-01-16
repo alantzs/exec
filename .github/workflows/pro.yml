@@ -1,19 +1,26 @@
-name: Build PRO Version
-on: 
-  push:
-    paths:
-      - 'Pro.cs' # Собирает только если изменил Pro версию
+name: Build EXEC PC
+on: [push, workflow_dispatch] # workflow_dispatch добавит кнопку "Run workflow" вручную
+
 jobs:
   build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.1
-      - name: Compile PRO
-        run: csc.exe /target:winexe /out:EXEC_PRO_PC.exe Pro.cs
-      - name: Upload
+
+      - name: Compile FREE Version
+        # Компилируем Free.cs в файл EXEC_FREE.exe
+        run: csc.exe /target:winexe /out:EXEC_FREE.exe Free.cs
+
+      - name: Compile PRO Version
+        # Компилируем Pro.cs в файл EXEC_PRO.exe
+        run: csc.exe /target:winexe /out:EXEC_PRO.exe Pro.cs
+
+      - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: Exec_Pro_Build
-          path: EXEC_PRO_PC.exe
+          name: EXEC_Builds
+          path: "*.exe"
