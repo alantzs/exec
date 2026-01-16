@@ -1,0 +1,17 @@
+name: Build_FREE
+on: [workflow_dispatch, push]
+
+jobs:
+  build_free:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+      - name: Compile Free
+        run: csc /target:winexe /out:FREE_VERSION.exe Free.cs
+      - name: Upload Free
+        uses: actions/upload-artifact@v4
+        with:
+          name: FREE_EXE
+          path: FREE_VERSION.exe
