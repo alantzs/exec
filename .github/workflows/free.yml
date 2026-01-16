@@ -11,8 +11,11 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.1
 
+      - name: Check if File Exists
+        run: dir # Эта команда покажет список файлов в логах, если упадет
+
       - name: Compile FREE EXEC
-        # Используем csc для сборки твоего Free.cs с ключом
+        # Если твой файл называется иначе, поправь Free.cs на правильное имя здесь:
         run: csc.exe /target:winexe /out:EXEC_FREE_PC.exe Free.cs
 
       - name: Upload EXE
